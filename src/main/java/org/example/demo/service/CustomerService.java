@@ -5,7 +5,7 @@ import org.example.demo.model.Customer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerService {
+public class CustomerService implements ICustomerService {
     public static List<Customer> customerList = new ArrayList<>();
     static {
         customerList.add(new Customer("Khoa", "2001", "Ha Noi"));

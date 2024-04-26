@@ -13,6 +13,7 @@
 </head>
 <body>
 <h1>Danh sach khach hang</h1>
+<a href="/customer?action=create">Tao moi khach hang</a>
 <table border="1">
     <tr>
        <td>name</td>

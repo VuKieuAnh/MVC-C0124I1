@@ -12,6 +12,7 @@
 </head>
 <body>
 <h1>Tao moi khach hang</h1>
+<span>${mess}</span>
 <%--khong dat action cho form: submit form tu lay action tren url--%>
 <form method="post">
     <input name="name">

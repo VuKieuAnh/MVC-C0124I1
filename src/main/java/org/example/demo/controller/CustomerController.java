@@ -3,6 +3,7 @@ package org.example.demo.controller;
 import org.example.demo.HelloServlet;
 import org.example.demo.model.Customer;
 import org.example.demo.service.CustomerService;
+import org.example.demo.service.ICustomerService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @WebServlet(name = "customercontroller", urlPatterns = "/customer")
 public class CustomerController extends HttpServlet {
+    private final ICustomerService customerService = new CustomerService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -37,9 +39,8 @@ public class CustomerController extends HttpServlet {
         }
     }
 
-    private static void showAllCustomer(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void showAllCustomer(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //        lay du lieu tu model
-        CustomerService customerService = new CustomerService();
         List<Customer> listC = customerService.findAll();
 //        lay ra view
         RequestDispatcher list = req.getRequestDispatcher("customer/list.jsp");
@@ -53,18 +54,23 @@ public class CustomerController extends HttpServlet {
         String action = req.getParameter("action");
         switch (action){
             case "create":
-//                lay du lieu
-                String name = req.getParameter("name");
-                String dob = req.getParameter("dob");
-                String address = req.getParameter("address");
-                Customer c = new Customer(name, dob, address);
-//                goi service
-                CustomerService customerService = new CustomerService();
-                customerService.createCustomer(c);
-                showAllCustomer(req, resp);
+                createNewCustomer(req, resp);
                 break;
             default:
                 showAllCustomer(req, resp);
         }
+    }
+
+    private void createNewCustomer(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //                lay du lieu
+        String name = req.getParameter("name");
+        String dob = req.getParameter("dob");
+        String address = req.getParameter("address");
+        Customer c = new Customer(name, dob, address);
+//                goi service
+        customerService.createCustomer(c);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("customer/create.jsp");
+        req.setAttribute("mess", "tao moi thanh cong");
+        requestDispatcher.forward(req, resp);
     }
 }
